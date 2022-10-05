@@ -1,0 +1,16 @@
+{
+  "autoload": {
+    "psr-4": {
+      "DocFlow\\": "src/"
+    }
+  },
+  "require": {
+    "myclabs/php-enum": "^1.8",
+    "phpunit/phpunit": "^9.5",
+    "lcobucci/clock": "^2.2",
+    "phpspec/prophecy-phpunit": "^2.0"
+  },
+  "require-dev": {
+    "phpspec/prophecy": "^1.15"
+  }
+}
