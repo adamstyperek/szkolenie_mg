@@ -1,6 +1,7 @@
 <?php
 
 use DocFlow\Document;
+use DocFlow\DocumentSigner;
 use DocFlow\Number;
 use DocFlow\NumberGenerator\DemoGenerator;
 use DocFlow\NumberGenerator\ISONumberGenerator;
@@ -40,9 +41,21 @@ class DocumentTest extends TestCase
 
         $document = $this->get_test_document();
         $document->verify('verificatorId');
-        $document->publish();
+        $document->publish($this->getDocumentSigner()->reveal());
 
         $document->changeContent('changed contnet');
+    }
+
+    /**
+     * @test
+     */
+    public function when_document_is_published_then_sign_document_method_is_called()
+    {
+        $document = $this->get_test_document();
+        $document->verify('verificatorId');
+        $documentSigner = $this->getDocumentSigner();
+        $document->publish($documentSigner->reveal());
+        $documentSigner->signDocument($document)->shouldBeCalled();
     }
 
     /**
@@ -54,7 +67,7 @@ class DocumentTest extends TestCase
 
         $document = $this->get_test_document();
         $document->verify('verificatorId');
-        $document->publish();
+        $document->publish($this->getDocumentSigner()->reveal());
 
         $document->changeTitle('changed title');
     }
@@ -68,7 +81,7 @@ class DocumentTest extends TestCase
 
         $document = $this->get_test_document();
 
-        $document->publish();
+        $document->publish($this->getDocumentSigner()->reveal());
     }
 
     /**
@@ -163,5 +176,11 @@ class DocumentTest extends TestCase
         $numberGenerator->generateNumber(Argument::type(Type::class))->WillReturn(new Number('abc'), new Number('def'));
 
         return $numberGenerator->reveal();
+    }
+
+    private function getDocumentSigner() {
+        $documentSigner = $this->prophesize(DocumentSigner::class);
+        $documentSigner->signDocument(Argument::type(Document::class))->willReturn('some String');
+        return $documentSigner;
     }
 }

@@ -68,12 +68,13 @@ class Document
         $this->verificator = null;
     }
 
-    public function publish()
+    public function publish(DocumentSigner $documentSigner)
     {
         if($this->status != Status::VERIFY()) {
             throw new \Exception('Document not verified');
         }
         $this->status = Status::PUBLISHED();
+        $documentSigner->signDocument($this);
     }
 
     public function copy(string $author, Number $number): self

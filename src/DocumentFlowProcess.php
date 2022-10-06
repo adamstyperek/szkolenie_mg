@@ -2,9 +2,11 @@
 
 namespace DocFlow;
 
+use DocFlow\DocumentCatalog\DocumentCatalog;
+
 class DocumentFlowProcess
 {
-    private DocumentsCatalog $documentsCatalog;
+    private DocumentCatalog $documentsCatalog;
 
     public function __construct(DocumentsCatalog $documentsCatalog)
     {
